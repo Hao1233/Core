@@ -1,0 +1,33 @@
+{% extends "OurProfile/layout.html" %}
+{%load static%}
+{% block title %}
+<title>post</title>
+{% endblock title %}
+{% block content %}
+<div style="display: flex;align-content: center;text-align: center;justify-content:space-between;padding: 5px;"> 
+    <div style="border: solid 0.5px;" >
+        <img class="thumbnail" src="{{ post.images.url }}">
+        <h6 class="post-title">{{post.title}}</h6>
+        {% for categories in post.categories.all %}
+                <small style="border: solid 1px;border-radius: 2px;margin-right: 5px;">{{categories}}</small>
+        {% endfor %}
+    </div>
+    <div style="border: solid 0.5px;min-width: 500px;">
+        <p>{{post.body}}</p>
+    </div>
+</div>
+<div>
+    {% for comment in post.comments.all %}
+        <small>{{comment.customer_comment}}</small>
+        <p> {{comment.body}} - {{comment.date}}</p>
+    {% endfor %}
+</div>
+<hr>
+<div>
+    <form method="post" action="{% url 'comment' post.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ comments.as_p}}
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends "OurProfile/layout.html" %}
+{% load static %}
+
+{% block title %}
+<title>post</title>
+{% endblock title %}
+{% block content %}
+<div style="padding-top: 50px;">
+    <div>
+        <a href="{% url 'createpost' %}"><span>Create News Post</span></a>
+    </div>
+    <div class="main-container">
+        <div class="post-wrapper">
+        {% for post in posts %}	
+            <div>
+                <div class="post">
+                    <a href="{% url 'post' post.id %}">
+                        {% if post.images %}
+                        <img class="thumbnail" src="{{ post.images.url }}">
+                        {% else %}
+                        <p>no images </p>
+                        {% endif %}
+                    </a>
+                    <small>create by:{{post.customer}}</small>
+                    <div class="post-preview">
+                        <h6 class="post-title">{{post.title}}</h6>
+                        <p class="post-intro">{{post.body}}</p>
+                        {% for categories in post.categories.all %}
+                            <small style="border: solid 1px;border-radius: 2px;margin-right: 5px;">{{categories}}</small>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% load static %}
+    <div class="nav-wrapper">
+        <!-- Link around dots-wrapper added after tutorial video -->
+        <a href="index.html">
+            <div class="dots-wrapper">
+                <div id="dot-1" class="browser-dot"></div>
+                <div id="dot-2" class="browser-dot"></div>
+                <div id="dot-3" class="browser-dot"></div>
+            </div>
+        </a>
+        <ul id="navigation">
+            <li>
+            {% if  request.user.is_authenticated %}
+                {{user}}
+                <a href="{% url 'logout' %}">logout!</a>
+            {% else %}
+                <a href="{% url 'login' %}">login</a>
+                /<a href="{% url 'createuser' %}">register?</a>
+            {% endif %}
+                /<a href="{% url 'home' %}">Contact</a>
+            </li>
+        </ul>
+    </div>
