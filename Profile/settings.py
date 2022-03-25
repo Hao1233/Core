@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     
     'OurProfile.apps.OurprofileConfig',
     'crispy_forms',
+    'django_filters',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MIDDLEWARE = [

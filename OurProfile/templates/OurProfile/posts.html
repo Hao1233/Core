@@ -9,6 +9,15 @@
     <div>
         <a href="{% url 'createpost' %}"><span>Create News Post</span></a>
     </div>
+
+    <div>
+        <form method="get">
+            {{filters.form}}
+            <input type="submit" value="research">
+        </form>
+    </div>
+
+
     <div class="main-container">
         <div class="post-wrapper">
         {% for post in posts %}	

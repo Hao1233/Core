@@ -1,19 +1,25 @@
+from email.message import Message
 from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as django_logout
+from django.contrib import messages
 
 # Create your views here.
 from .models import *
 from .forms import CreatePostForm,CreateUserForm, CreateCommentForm
+from .filters import FiltersForms
 def home(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all()[0:3]
     context = {'posts':posts}
     return render(request,"OurProfile/home.html",context)
 def posts(request):
     posts = Post.objects.all()
-    context = {'posts':posts}
+    filters = FiltersForms(request.GET, queryset=posts)
+    posts = filters.qs
+
+    context = {'posts':posts,'filters':filters}
     return render(request,"OurProfile/posts.html",context)
 def post(request,pk):
     post = Post.objects.get(pk=pk)
@@ -56,6 +62,9 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             return redirect('home')
+        else:
+            messages.error(request, 'Your password or account wrong!')
+            return redirect('login')
     return render(request,"OurProfile/login_form.html")
 def logout(request):
     django_logout(request)

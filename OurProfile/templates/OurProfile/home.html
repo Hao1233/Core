@@ -22,29 +22,7 @@
 				<h1>Hi, I'm Dennis Ivanov</h1>
 			</div>
 			<div class="intro-wrapper">
-				<div class="nav-wrapper">
-					<div class="dots-wrapper">
-					
-					<a href="{% url 'home' %}"><div id="dot-1" class="browser-dot"></div></a>
-
-					<a href="{% url 'posts' %}"><div id="dot-2" class="browser-dot"></div></a>
-
-					<a href="#"><div id="dot-2" class="browser-dot"></div></a>
-					<ul id="navigation">
-					</div>
-						<li>
-							{% if  request.user.is_authenticated %}
-								{{user}}
-								<a href="{% url 'logout' %}">logout!</a>
-							{% else %}
-								<a href="{% url 'login' %}">login</a>
-								/<a href="{% url 'createuser' %}">register?</a>
-							{% endif %}
-								/<a href="{% url 'home' %}">Contact</a>
-							</li>
-					</ul>
-				</div>
-
+				{% include 'OurProfile/navbar.html' %}
 				<div class="left-column">
 					<img id="profile_pic" src="{% static 'images/me.jpg' %}">
 					<h5 style="text-align: center;line-height: 0;">Personalize Theme</h5>
