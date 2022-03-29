@@ -11,7 +11,7 @@
     </div>
 
     <div>
-        <form method="get">
+        <form id="searchform" method="get">
             {{filters.form}}
             <input type="submit" value="research">
         </form>
@@ -43,6 +43,45 @@
         {% endfor %}
         </div>
     </div>
-</div>
+    <div class="pagination">
+        <span class="step-links">
+            <div style="display: flex;">
+                {% if posts.has_previous %}
+                    <li class="page-item" ><a data-page="1" class="page-link" href="?page=1">&laquo; first</a></li>
+                    <li class="page-item" ><a data-page="{{posts.previous_page_number}}" class="page-link" href="?page={{ posts.previous_page_number }}">previous</a></li>
+                {% endif %}
+                {% for i in posts.paginator.page_range %}
+                    {% if posts.number == i%}
+                        <li class="page-item" style="margin: 5px;"><a class="active page-link">{{i}}</a></li>
+                    {% else %}
+                        <li class="page-item" style="margin: 5px;"><a data-page="{{i}}" class="page-link" href="?page{{i}}">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if posts.has_next %}
+                    <li class="page-item"><a data-page="{{posts.next_page_number}}" class="page-link" href="?page={{ posts.next_page_number }}">next</a></li>
+                    <li class="page-item"><a data-page="{{posts.paginator.num_pages}}" class="page-link" href="?page={{ posts.paginator.num_pages }}">last &raquo;</a></li>
+                {% endif %}
+            <span class="current">
+                Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+            </span>
+            </div>
+        </span>
 
+    </div>
+</div>
+<script type="text/javascript">
+    let searchform = document.getElementById('searchform')
+    let pagelinks = document.getElementsByClassName('page-link')
+
+    let here = document.getElementById('here')
+    for(var i=0; pagelinks.length;i++){
+        pagelinks[i].addEventListener('click',function (e) {
+            e.preventDefault()
+            let page = this.dataset.page
+            console.log('page:',page)
+            searchform.innerHTML += `<input value="${page}" name="page" hidden>` 
+            searchform.submit()
+        })
+    } 
+</script>
 {% endblock content %}

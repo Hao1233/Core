@@ -1,11 +1,10 @@
-from email.message import Message
-from multiprocessing import context
+
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as django_logout
 from django.contrib import messages
-
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage, Page
 # Create your views here.
 from .models import *
 from .forms import CreatePostForm,CreateUserForm, CreateCommentForm
@@ -18,8 +17,18 @@ def posts(request):
     posts = Post.objects.all()
     filters = FiltersForms(request.GET, queryset=posts)
     posts = filters.qs
+    page_number = request.GET.get('page')
+    paginator = Paginator(posts, 2)
+    try:
+        posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
 
-    context = {'posts':posts,'filters':filters}
+    context = {'posts':posts,'filters':filters,}
+
+    
     return render(request,"OurProfile/posts.html",context)
 def post(request,pk):
     post = Post.objects.get(pk=pk)
